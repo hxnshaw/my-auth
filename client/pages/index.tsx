@@ -6,7 +6,15 @@ export default function Index() {
     <main className="w-screen h-screen bg-[url('../public/images/hero.jpg')] bg-cover bg-center">
       <section className="h-full w-full bg-gradient-to-br from-[#375CA9]/30 to-pink-500/30 backdrop-brightness-75">
         <div className="flex items-center justify-between p-8">
-          <Logo />
+          <Link href="/">
+            <div className="flex items-center justify-center h-20 w-20 border rounded-full shadow-lg">
+              <h1 className="text-2xl text-center font-extralight leading-none text-white tracking-tight">
+                Travel
+                <br />
+                Log
+              </h1>
+            </div>
+          </Link>
           <nav>
             <ul className="flex gap-6 text-white">
               <li>
