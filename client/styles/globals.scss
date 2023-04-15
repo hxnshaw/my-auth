@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-style: normal;
+}
+
+/* html {
+  font-size: 62.5%;
+} */
+
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+input,
+select,
+textarea {
+  &:focus-visible {
+    outline: 1px solid var(--accent-color) !important;
+  }
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  }
+}
