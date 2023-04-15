@@ -2,7 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const app = express();
 const { sequelize } = require("./models");
-const port = 4545;
+const port = 3000;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
