@@ -15,7 +15,7 @@ export default function Index() {
                 </Link>
               </li>
               <li>
-                <Link href="/signup" className="hover:underline">
+                <Link href="/login" className="hover:underline">
                   Log In
                 </Link>
               </li>
