@@ -157,7 +157,7 @@ export default function Index() {
         </Formik>
         <p className="mt-4">
           Already have an account?{" "}
-          <Link className="text-[#375CA9] font-bold" href="/admin/login">
+          <Link className="text-[#375CA9] font-bold" href="/login">
             Log In
           </Link>
         </p>
