@@ -4,6 +4,7 @@ import { persistor, store } from "@/store";
 import { ToastContainer, Zoom } from "react-toastify";
 import type { AppProps } from "next/app";
 import AxiosConfig from "@/components/AxiosConfig";
+import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
