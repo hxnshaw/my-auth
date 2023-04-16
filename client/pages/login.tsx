@@ -1,7 +1,7 @@
-/* eslint-disable react/no-unescaped-entities */
 import * as Yup from "yup";
 import { useState } from "react";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import { BaseButtonWithColor } from "@/components/UI/Buttons";
 import { _login } from "@/store/slices/auth";
@@ -18,16 +18,16 @@ type Values = {
 
 export default function Index() {
   const dispatch = useAppDispatch();
+  const { error } = useAppSelector((state) => state.auth);
   const [fieldType, setFieldType] = useState<"password" | "text">("password");
   const signupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Enter a valid email"),
-    password: Yup.string()
-      .required("Enter a valid password")
-      // .min(8, "Password must be 8 characters long")
-      // .matches(/[0-9]/, "Password requires a number")
-      // .matches(/[a-z]/, "Password requires a lowercase letter")
-      // .matches(/[A-Z]/, "Password requires an uppercase letter")
-      // .matches(/[^\w]/, "Password requires a symbol"),
+    password: Yup.string().required("Enter a valid password"),
+    // .min(8, "Password must be 8 characters long")
+    // .matches(/[0-9]/, "Password requires a number")
+    // .matches(/[a-z]/, "Password requires a lowercase letter")
+    // .matches(/[A-Z]/, "Password requires an uppercase letter")
+    // .matches(/[^\w]/, "Password requires a symbol"),
   });
 
   return (
@@ -48,7 +48,11 @@ export default function Index() {
                 email: values.email,
                 password: values.password,
               })
-            );
+            )
+              .unwrap()
+              .catch(() => {
+                setSubmitting(false);
+              });
           }}
         >
           {({ errors, touched, isSubmitting }) => (
@@ -134,7 +138,7 @@ export default function Index() {
           )}
         </Formik>
         <p className="mt-4">
-          Don't have an account yet?{" "}
+          Don&apos;t have an account yet?{" "}
           <Link className="text-[#375CA9] font-bold" href="/signup">
             Create an Account
           </Link>

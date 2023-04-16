@@ -25,11 +25,11 @@ export default function Index() {
     email: Yup.string().email("Invalid email").required("Enter a valid email"),
     password: Yup.string()
       .required("Enter a valid password")
-      .min(8, "Password must be 8 characters long")
-      // .matches(/[0-9]/, "Password requires a number")
-      // .matches(/[a-z]/, "Password requires a lowercase letter")
-      // .matches(/[A-Z]/, "Password requires an uppercase letter")
-      // .matches(/[^\w]/, "Password requires a symbol"),
+      .min(8, "Password must be 8 characters long"),
+    // .matches(/[0-9]/, "Password requires a number")
+    // .matches(/[a-z]/, "Password requires a lowercase letter")
+    // .matches(/[A-Z]/, "Password requires an uppercase letter")
+    // .matches(/[^\w]/, "Password requires a symbol"),
   });
 
   return (
@@ -52,7 +52,11 @@ export default function Index() {
                 password: values.password,
                 userName: values.userName,
               })
-            );
+            )
+              .unwrap()
+              .catch(() => {
+                setSubmitting(false);
+              });
             // setTimeout(() => {
             //   alert(JSON.stringify(values, null, 2));
             //   setSubmitting(false);
