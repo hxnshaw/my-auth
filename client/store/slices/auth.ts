@@ -76,6 +76,7 @@ export const auth = createSlice({
         state.loading = false;
         state.error = true;
         state.invalidSession = false;
+        notify("An error occurred", "error");
       })
       .addCase(_login.fulfilled, (state, { payload }) => {
         state.token = payload.data.data.token;
@@ -83,7 +84,7 @@ export const auth = createSlice({
         state.loading = false;
         state.error = false;
         state.invalidSession = false;
-        notify(payload.data.message, "success", "logged-in");
+        notify("Success", "success");
       });
     builder
       .addCase(_register.pending, (state) => {
@@ -99,6 +100,7 @@ export const auth = createSlice({
         state.loading = false;
         state.error = true;
         state.invalidSession = false;
+        notify("An error occurred", "error");
       })
       .addCase(_register.fulfilled, (state, { payload }) => {
         state.token = payload.data.data.token;
@@ -106,7 +108,7 @@ export const auth = createSlice({
         state.loading = false;
         state.error = false;
         state.invalidSession = false;
-        notify(payload.data.message, "success", "logged-in");
+        notify("Success", "success");
       });
   },
 });
