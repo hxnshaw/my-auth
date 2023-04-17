@@ -3,3 +3,7 @@ export interface ILoginResponse {
   message: string;
   data: string;
 }
+
+export interface IRegisterResponse {
+  user: string;
+}
