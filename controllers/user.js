@@ -25,7 +25,7 @@ exports.registerUser = async (req, res) => {
     });
     const tokenUser = createTokenUser(user);
     attachCookiesToResponse({ res, user: tokenUser });
-    return res.status(201).json({ user: `Welcome, ${tokenUser.username} !` });
+    return res.status(201).json({ user: `${tokenUser.username}!` });
   } catch (error) {
     res.status(400).json(error.message);
   }
