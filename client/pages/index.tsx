@@ -1,7 +1,11 @@
-import Logo from "@/components/UI/Logo";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { logOut } from "@/store/slices/auth";
 import Link from "next/link";
 
 export default function Index() {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   return (
     <main className="w-screen h-screen bg-[url('../public/images/hero.jpg')] bg-cover bg-center">
       <section className="h-full w-full bg-gradient-to-br from-[#375CA9]/30 to-pink-500/30 backdrop-brightness-75">
@@ -17,16 +21,37 @@ export default function Index() {
           </Link>
           <nav>
             <ul className="flex gap-6 text-white">
-              <li>
-                <Link href="/signup" className="hover:underline">
-                  Sign Up
-                </Link>
-              </li>
-              <li>
-                <Link href="/login" className="hover:underline">
-                  Log In
-                </Link>
-              </li>
+              {!user && (
+                <>
+                  <li>
+                    <Link href="/signup" className="hover:underline">
+                      Sign Up
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/login" className="hover:underline">
+                      Log In
+                    </Link>
+                  </li>
+                </>
+              )}
+              {user && (
+                <>
+                  <li>
+                    <Link href="/login" className="capitalize hover:underline">
+                      {user}
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="hover:underline"
+                      onClick={() => dispatch(logOut())}
+                    >
+                      Log Out
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>

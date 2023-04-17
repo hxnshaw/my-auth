@@ -1,28 +1,9 @@
 export interface ILoginResponse {
   status: string;
   message: string;
-  data: {
-    token: string;
-    data: IUser;
-  };
+  data: string;
 }
 
-export interface IUser {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  referral: {
-    code: string;
-  };
-  account: {
-    type: string;
-    role: string;
-  };
-  archive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  isActive: boolean;
-  __v: number;
+export interface IRegisterResponse {
+  user: string;
 }

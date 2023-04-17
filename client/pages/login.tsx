@@ -1,5 +1,6 @@
 import * as Yup from "yup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { Formik, Field, Form, FormikHelpers } from "formik";
@@ -17,8 +18,9 @@ type Values = {
 };
 
 export default function Index() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
-  const { error } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const [fieldType, setFieldType] = useState<"password" | "text">("password");
   const signupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Enter a valid email"),
@@ -29,6 +31,12 @@ export default function Index() {
     // .matches(/[A-Z]/, "Password requires an uppercase letter")
     // .matches(/[^\w]/, "Password requires a symbol"),
   });
+
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
 
   return (
     <div className="flex h-screen">
@@ -133,6 +141,7 @@ export default function Index() {
                 text="Log In"
                 loading={isSubmitting}
                 className="mt-12"
+                type="submit"
               />
             </Form>
           )}
