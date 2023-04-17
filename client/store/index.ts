@@ -13,7 +13,7 @@ import auth from "./slices/auth";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
-  key: "one-flare-admin",
+  key: "kenpachi",
   storage,
 };
 
