@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import * as Yup from "yup";
 import { useState } from "react";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import { BaseButtonWithColor } from "@/components/UI/Buttons";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import Logo from "@/components/UI/Logo";
 import classNames from "classnames";
 import Eye from "public/svgs/eye.svg";
 import EyeSlash from "public/svgs/eye-slash.svg";
+import { _register } from "@/store/slices/auth";
 
 type Values = {
   userName: string;
@@ -16,17 +18,18 @@ type Values = {
 };
 
 export default function Index() {
+  const dispatch = useAppDispatch();
   const [fieldType, setFieldType] = useState<"password" | "text">("password");
   const signupSchema = Yup.object().shape({
     userName: Yup.string().required("Enter a valid username"),
     email: Yup.string().email("Invalid email").required("Enter a valid email"),
     password: Yup.string()
       .required("Enter a valid password")
-      .min(8, "Password must be 8 characters long")
-      .matches(/[0-9]/, "Password requires a number")
-      .matches(/[a-z]/, "Password requires a lowercase letter")
-      .matches(/[A-Z]/, "Password requires an uppercase letter")
-      .matches(/[^\w]/, "Password requires a symbol"),
+      .min(8, "Password must be 8 characters long"),
+    // .matches(/[0-9]/, "Password requires a number")
+    // .matches(/[a-z]/, "Password requires a lowercase letter")
+    // .matches(/[A-Z]/, "Password requires an uppercase letter")
+    // .matches(/[^\w]/, "Password requires a symbol"),
   });
 
   return (
@@ -43,10 +46,21 @@ export default function Index() {
             values: Values,
             { setSubmitting }: FormikHelpers<Values>
           ) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 500);
+            dispatch(
+              _register({
+                email: values.email,
+                password: values.password,
+                userName: values.userName,
+              })
+            )
+              .unwrap()
+              .catch(() => {
+                setSubmitting(false);
+              });
+            // setTimeout(() => {
+            //   alert(JSON.stringify(values, null, 2));
+            //   setSubmitting(false);
+            // }, 500);
           }}
         >
           {({ errors, touched, isSubmitting }) => (

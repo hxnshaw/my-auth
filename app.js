@@ -1,11 +1,13 @@
 const express = require("express");
 require("dotenv").config();
 const app = express();
+const cors = require("cors");
 const { sequelize } = require("./models");
-const port = 3000;
+const port = 8080;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser(process.env.JWT_SECRET_KEY));
