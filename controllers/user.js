@@ -51,7 +51,7 @@ exports.loginUsers = async (req, res) => {
     }
     const tokenUser = createTokenUser(user);
     attachCookiesToResponse({ res, user: tokenUser });
-    res.redirect(200, "/");
+    res.redirect(302, "/");
   } catch (error) {
     res.status(400).json(error.message);
   }
