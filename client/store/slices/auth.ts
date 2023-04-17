@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { notify } from "@/helpers";
-import { IUser } from "@/models/auth";
 import { login, register } from "@/services/auth";
 
 export const _login = createAsyncThunk(
@@ -18,7 +17,7 @@ export const _login = createAsyncThunk(
 export const _register = createAsyncThunk(
   `register`,
   async (
-    payload: { email: string; password: string; userName: string },
+    payload: { email: string; password: string; username: string },
     thunkApi
   ) => {
     try {
@@ -31,19 +30,15 @@ export const _register = createAsyncThunk(
 );
 
 interface authState {
-  token: string | null;
-  user: IUser | null;
+  user: string | null;
   loading: boolean;
   error: boolean;
-  invalidSession: boolean;
 }
 
 const initialState: authState = {
-  token: null,
   user: null,
   loading: false,
   error: false,
-  invalidSession: false,
 };
 
 export const auth = createSlice({
@@ -51,67 +46,49 @@ export const auth = createSlice({
   initialState,
   reducers: {
     logOut: (state) => {
-      state.token = null;
       state.user = null;
       state.loading = false;
       state.error = false;
-      state.invalidSession = false;
-    },
-    invalidSession: (state) => {
-      state.invalidSession = true;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(_login.pending, (state) => {
-        state.token = null;
         state.user = null;
         state.loading = true;
         state.error = false;
-        state.invalidSession = false;
       })
-      .addCase(_login.rejected, (state) => {
-        state.token = null;
+      .addCase(_login.rejected, (state, { payload }: any) => {
         state.user = null;
         state.loading = false;
         state.error = true;
-        state.invalidSession = false;
-        notify("An error occurred", "error");
+        notify(payload.response.data, "error");
       })
       .addCase(_login.fulfilled, (state, { payload }) => {
-        state.token = payload.data.data.token;
-        state.user = payload.data.data.data;
+        state.user = payload.data.data;
         state.loading = false;
         state.error = false;
-        state.invalidSession = false;
-        notify("Success", "success");
       });
     builder
       .addCase(_register.pending, (state) => {
-        state.token = null;
         state.user = null;
         state.loading = true;
         state.error = false;
-        state.invalidSession = false;
       })
-      .addCase(_register.rejected, (state) => {
-        state.token = null;
+      .addCase(_register.rejected, (state, { payload }: any) => {
         state.user = null;
         state.loading = false;
         state.error = true;
-        state.invalidSession = false;
-        notify("An error occurred", "error");
+        console.log(payload);
+        notify(payload.response.data.message, "error");
       })
       .addCase(_register.fulfilled, (state, { payload }) => {
-        state.token = payload.data.data.token;
-        state.user = payload.data.data.data;
+        state.user = payload.data.user;
         state.loading = false;
         state.error = false;
-        state.invalidSession = false;
-        notify("Success", "success");
       });
   },
 });
 
-export const { logOut, invalidSession } = auth.actions;
+export const { logOut } = auth.actions;
 export default auth.reducer;
