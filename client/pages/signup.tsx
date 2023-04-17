@@ -1,27 +1,31 @@
 /* eslint-disable react/no-unescaped-entities */
 import * as Yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector } from "@/hooks/useAppSelector";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import { BaseButtonWithColor } from "@/components/UI/Buttons";
+import { _register } from "@/store/slices/auth";
 import Link from "next/link";
 import Logo from "@/components/UI/Logo";
 import classNames from "classnames";
 import Eye from "public/svgs/eye.svg";
 import EyeSlash from "public/svgs/eye-slash.svg";
-import { _register } from "@/store/slices/auth";
 
 type Values = {
-  userName: string;
+  username: string;
   email: string;
   password: string;
 };
 
 export default function Index() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   const [fieldType, setFieldType] = useState<"password" | "text">("password");
   const signupSchema = Yup.object().shape({
-    userName: Yup.string().required("Enter a valid username"),
+    username: Yup.string().required("Enter a valid username"),
     email: Yup.string().email("Invalid email").required("Enter a valid email"),
     password: Yup.string()
       .required("Enter a valid password")
@@ -32,12 +36,18 @@ export default function Index() {
     // .matches(/[^\w]/, "Password requires a symbol"),
   });
 
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
+
   return (
     <div className="flex h-screen">
       <div className="w-full relative z-10 md:w-1/2 md:static md:z-0 bg-white opacity-90 px-4 py-8 sm:p-16 lg:px-28 xl:px-36 flex flex-col overflow-y-auto">
         <Formik
           initialValues={{
-            userName: "",
+            username: "",
             password: "",
             email: "",
           }}
@@ -50,7 +60,7 @@ export default function Index() {
               _register({
                 email: values.email,
                 password: values.password,
-                userName: values.userName,
+                username: values.username,
               })
             )
               .unwrap()
@@ -72,25 +82,25 @@ export default function Index() {
               </p>
 
               <fieldset className="relative flex flex-col">
-                <label htmlFor="userName" className="mt-6 mb-3">
+                <label htmlFor="username" className="mt-6 mb-3">
                   Username*
                 </label>
                 <Field
-                  id="userName"
-                  name="userName"
+                  id="username"
+                  name="username"
                   placeholder="undisputedTraveler"
                   type="text"
                   className={classNames(
                     "w-full h-14 p-4 border border-[#77777B] rounded-md",
-                    { "!border-red-500": errors.userName }
+                    { "!border-red-500": errors.username }
                   )}
                 />
-                {errors.userName && touched.userName && (
+                {errors.username && touched.username && (
                   <p
                     className="absolute right-0 top-[7.5rem] text-[.9rem] text-red-500
                 "
                   >
-                    {errors.userName}
+                    {errors.username}
                   </p>
                 )}
               </fieldset>
@@ -165,6 +175,7 @@ export default function Index() {
                 text="Sign Up"
                 loading={isSubmitting}
                 className="mt-12"
+                type="submit"
               />
             </Form>
           )}
