@@ -8,7 +8,7 @@ export function login(payload: { email: string; password: string }) {
 export function register(payload: {
   email: string;
   password: string;
-  userName: string;
+  username: string;
 }) {
   return axios.post<ILoginResponse>(`/register`, payload);
 }
