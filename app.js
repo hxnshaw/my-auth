@@ -13,7 +13,10 @@ app.use(bodyParser.json());
 app.use(cookieParser(process.env.JWT_SECRET_KEY));
 
 const userRouter = require("./routes/user");
+const searchRouter = require("./routes/searchRouter");
+
 app.use("/api/v1/anons", userRouter);
+app.use("/api/v1/anons/search", searchRouter);
 
 app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);
